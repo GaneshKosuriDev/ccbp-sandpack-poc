@@ -1,0 +1,15 @@
+diff --git a/node_modules/@codesandbox/sandpack-react/dist/cjs/index.js b/node_modules/@codesandbox/sandpack-react/dist/cjs/index.js
+index fc895f1..510deaf 100644
+--- a/node_modules/@codesandbox/sandpack-react/dist/cjs/index.js
++++ b/node_modules/@codesandbox/sandpack-react/dist/cjs/index.js
+@@ -691,6 +691,10 @@ h1 {
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
++    <script>
++    console.log("hello")
++    </script>
++
+   </head>
+   <body>
+     <div id="root"></div>

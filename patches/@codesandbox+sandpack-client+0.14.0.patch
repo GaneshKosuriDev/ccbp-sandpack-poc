@@ -1,0 +1,14 @@
+diff --git a/node_modules/@codesandbox/sandpack-client/dist/cjs/client.js b/node_modules/@codesandbox/sandpack-client/dist/cjs/client.js
+index 7e9d598..b598dd5 100644
+--- a/node_modules/@codesandbox/sandpack-client/dist/cjs/client.js
++++ b/node_modules/@codesandbox/sandpack-client/dist/cjs/client.js
+@@ -334,7 +334,8 @@ var SandpackClient = class {
+       this.iframe = selector;
+     }
+     if (!this.iframe.getAttribute("sandbox")) {
+-      this.iframe.setAttribute("sandbox", "allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts");
++      this.iframe.setAttribute("sandbox", "allow-forms allow-modals allow-popups allow-presentation allow-scripts");
++      this.iframe.setAttribute("id","ccbp")
+     }
+     this.iframe.src = options.startRoute ? new URL(options.startRoute, this.bundlerURL).toString() : this.bundlerURL;
+     this.iframeProtocol = new IFrameProtocol(this.iframe, this.bundlerURL);

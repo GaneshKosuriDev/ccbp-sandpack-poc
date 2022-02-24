@@ -13,6 +13,9 @@
 - Use snowpack for faster development.
 - Installing a new third party package?
 - File Tree 
+- Run all test suites parallely
+- Provide different files for different test suites
+- Make single import in index.js for multiple test suites
 
 ### Checklist while using this app
 
@@ -22,6 +25,11 @@
 
 - we shall provide it as third party package similar to `ccbp-jest-reporter`.
 
+
+### Issues
+
+- Cookies are not working in the Code Sandbox Preview.
+- routes in the URL Navigation bar is not working as expected when a route is changed.
 
 ### Resources
 

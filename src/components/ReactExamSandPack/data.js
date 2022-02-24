@@ -1,3 +1,120 @@
+// const fs = require("fs-extra");
+
+const notFoundTestsJSCode = `
+import { BrowserRouter,Link } from "react-router-dom";
+import { describe, it, expect, run, beforeAll, afterEach } from "jest-lite";
+import { render, cleanup, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+const NotFound = () => (
+  <div className="not-found-container">
+    <div className="not-found">
+      <div className="not-found-responsive-container">
+        <h1 className="not-found-heading">Lost Your Way ?</h1>
+        <p className="not-found-description">
+          we are sorry, the page you requested could not be found Please go back
+          to the homepage.
+        </p>
+        <Link className="go-back" to="/">
+          <button type="button">Go to Home</button>
+        </Link>
+      </div>
+    </div>
+  </div>
+);
+
+async function notFoundTests() {
+  const renderWithBrowserRouter = (ui = <NotFound />) => {
+    return render(ui, { wrapper: BrowserRouter });
+  };
+
+  describe("Not Found Route tests", () => {
+    // beforeAll(() => {
+    //   console.log("before all");
+    // });
+
+    //   afterAll(() => {
+    //     server.close();
+    //   });
+
+    afterEach(() => {
+      // console.log("after each");
+      cleanup();
+    });
+
+    it('When a random path is provided as the URL path, then the page should consist of an HTML main heading element with text content as "Lost Your Way":::5:::', () => {
+      renderWithBrowserRouter();
+      expect(
+        screen.getByRole("heading", {
+          name: /Lost Your Way/i,
+        })
+      ).toBeTruthy();
+    });
+
+    it('When a random path is provided as the URL path, then the page should consist of an HTML paragraph element with text content as "we are sorry, the page you requested could not be found Please go back to the homepage.":::5:::', () => {
+      renderWithBrowserRouter();
+
+      const paragraphEl = screen.getByText(
+        /we are sorry, the page you requested could not be found Please go back to the homepage./i
+      );
+
+      expect(paragraphEl).toBeTruthy();
+      expect(paragraphEl.tagName).toBe("P");
+    });
+
+    it('When a random path is provided as the URL path, then the page should consist of an HTML button element with text content as "Go to Home" wrapper with Link from react-router-dom:::5:::', () => {
+      renderWithBrowserRouter();
+
+      expect(
+        screen.getByRole("link", {
+          name: /Go to Home/i,
+        })
+      ).toBeTruthy();
+    });
+
+    it('When a random path is provided as the URL path, then the page should consist of an HTML button element with text content as "Go to Home":::5:::', () => {
+      renderWithBrowserRouter();
+
+      expect(
+        screen.getByRole("button", {
+          name: /Go to Home/i,
+          exact: false,
+        })
+      ).toBeTruthy();
+    });
+
+    it('When a random path is provided as the URL path and the "Go to Home" button is clicked, then the page should be navigated to Home Route and consists of an HTML main heading element with text content as "Trending Now":::10:::', async () => {
+      // mockGetCookie();
+      renderWithBrowserRouter();
+
+      const homeLink = screen.getByRole("link", {
+        name: /Go to Home/i,
+      });
+      userEvent.click(homeLink);
+
+      // expect(
+      //   await screen.getByRole("heading", {
+      //     name: /Trending Now/i,
+      //     exact: false,
+      //   })
+      // ).toBeTruthy();
+      // expect(window.location.pathname).toBe(homeRoutePath);
+      // restoreGetCookieFns();
+    });
+  });
+
+  const result = await run();
+  parent.postMessage({type:"test-result",testResults:result},"*"); 
+};
+
+window.onmessage = function(event) {
+  if(event.data === "run-test-cases"){
+    notFoundTests()
+  }
+};
+
+`;
+
 const musicPlaylistJSCode = `
 import {Component} from 'react'
 import {BiSearch} from 'react-icons/bi'
@@ -288,6 +405,26 @@ const musicPlaylistCSSCode = `
     list-style-type: none;
     overflow-y: auto;
   }
+
+  .btn-container {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  }
+  
+  .btn {
+    background-color: rgb(15, 129, 224); /* Green */
+    border: none;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+  }  
   
 `.trim();
 
@@ -323,6 +460,7 @@ const TrackItem = props => {
         >
           <AiOutlineDelete size={20} />
         </button>
+        
       </div>
     </li>
   )
@@ -437,9 +575,12 @@ const packageJSONCode = `
     "@testing-library/user-event": "12.6.2",
     "chalk": "4.1.0",
     "jest-styled-components": "7.0.5",
+    "jest-lite": "^1.0.0-alpha.4",
     "react": "17.0.1",
+    "fs-extra": "10.0.1",
     "react-dom": "17.0.1",
     "react-icons": "4.2.0",
+    "react-router-dom": "5.3.0",
     "styled-components": "5.3.0"
   },
   "devDependencies": {
@@ -455,6 +596,7 @@ const packageJSONCode = `
   },
   "scripts": {
     "start": "craco start",
+    "poststart":"node notFoundTests.js",
     "build": "craco build",
     "test": "craco test",
     "lint": "eslint .",
@@ -497,12 +639,38 @@ const packageJSONCode = `
 
 `.trim();
 
+const initialJSCode = `
+import React, { StrictMode } from "react";
+import ReactDOM from "react-dom";
+import {notFoundTests} from "./notFoundTests.js"
+
+import "./styles.css";
+
+import App from "./App";
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(
+<StrictMode>
+  <App />
+</StrictMode>,
+rootElement
+);
+`.trim();
+
 export const musicPlaylistSolutionCode = {
+  "/index.js": {
+    code: initialJSCode,
+    hidden: true,
+  },
   "/App.js": {
     code: appJSCode,
   },
   "/App.css": {
     code: appCSSCode,
+  },
+  "/notFoundTests.js": {
+    code: notFoundTestsJSCode,
+    hidden: true,
   },
   "/src/components/MusicPlaylist/index.js": {
     code: musicPlaylistJSCode,
